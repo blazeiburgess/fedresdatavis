@@ -4,35 +4,39 @@ import matplotlib.pyplot as plt
 from dateutil.parser import parse as dateParse
 
 
-data = json.load(open('rates.json', 'r'))
+def main():
+    data = json.load(open('rates.json', 'r'))
 
-headers = []
+    headers = []
 
-for d in data:
-    if d["currency"] in headers:
-        pass
-    else:
-        headers.append(d["currency"])
+    for d in data:
+        if d["currency"] in headers:
+            pass
+        else:
+            headers.append(d["currency"])
 
-arranged_data = {} 
-l_h = []
-plt.figure()
+    arranged_data = {} 
+    l_h = []
+    plt.figure()
 
-for header in headers:
-    arranged_data[header] = list(filter(lambda d: d["currency"] == header, data))
-    dates = []
-    rates = []
-    for d in arranged_data[header]:
-        try:
-            rates.append(float(d["rate"]))
-            dates.append(dateParse(d["date"]))
-        except:
-            pass  
-    h, = plt.plot(dates, rates, label=header) 
-    l_h.append(h)
+    for header in headers:
+        arranged_data[header] = list(filter(lambda d: d["currency"] == header, data))
+        dates = []
+        rates = []
+        for d in arranged_data[header]:
+            try:
+                rates.append(float(d["rate"]))
+                dates.append(dateParse(d["date"]))
+            except:
+                pass  
+        h, = plt.plot(dates, rates, label=header) 
+        l_h.append(h)
 
-with open('rates_rearranged.json', 'w') as outfile:
-    json.dump(arranged_data, outfile)
+    with open('rates_rearranged.json', 'w') as outfile:
+        json.dump(arranged_data, outfile)
 
-plt.legend(handles=l_h)
-plt.show()
+    plt.legend(handles=l_h)
+    plt.show()
+
+if __name__ == '__main__':
+    main()
