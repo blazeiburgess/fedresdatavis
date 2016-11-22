@@ -27,8 +27,7 @@ for header in headers:
             rates.append(float(d["rate"]))
             dates.append(dateParse(d["date"]))
         except:
-            pass 
-    print(len(dates) == len(rates))
+            pass  
     h, = plt.plot(dates, rates, label=header) 
     l_h.append(h)
 
